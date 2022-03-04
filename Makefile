@@ -16,10 +16,10 @@ deps: $(DEPS)
 	$(CC) -MMD $< -o $@
 
 
-numcat: $(NUMCAT_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(NUMCAT_OBJS)
+numcat: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS)
 
 clean:
-	$(RM) numcat core *.o 
+	$(RM) numcat core *.o
 
 include $(DEPS)
