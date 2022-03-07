@@ -7,10 +7,12 @@
 #define BLK "\e[1;30m"
 #define OFF "\e[0m"
 
+#define BUFSIZE 65536
+
 void process( const char *fn )
 {
     FILE *fp;
-    char buffer[4096]={0};
+    char buffer[BUFSIZE]={0};
 
     if ((fp = fopen(fn, "r"))==NULL) {
         fprintf(stderr,"Cannot read from %s: %s\n", fn, strerror(errno));
