@@ -1,25 +1,28 @@
-CFLAGS=-O -Wall -Wextra -fstack-protector-strong -pipe # -arch x86_64 -mmacosx-version-min=12.0
+OS=$(shell uname -s)
+CFLAGS=-O -Wall -Wextra -fstack-protector-strong -pipe -MMD
+ifeq ($(OS), Darwin)
+	CFLAGS+=-arch x86_64 -mmacosx-version-min=12.0
+endif
 RM=rm -frv
-
 SRCS=main.c process.c
 OBJS=$(SRCS:.c=.o)
 DEPS=$(SRCS:.c=.d)
 .PHONY: all clean
+
 all: numcat
 
-deps: $(DEPS)
-
 %.o : %.c
-	$(CC) -c $(CFLAGS) $< -o $@
-
-%.d : %.c
-	$(CC) -MMD $< -o $@
-
+	$(CC) -c $(CFLAGS) $^ -o $@
 
 numcat: $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
 	$(RM) numcat core *.o
 
-include $(DEPS)
+squeaky-clean: clean
+	$(RM) *.d
+
+deps: $(DEPS)
+
+-include $(DEPS)
